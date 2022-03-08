@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Update&Delete";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Update&Delete</h1>
+    <p>EF Core 3.1 Testing</p>
+</div>
+<form>
+    <div class="form-group">
+        <label for="InputId">用户编号</label>
+        <input type="number" class="form-control" id="InputId" value="5214866">
+    </div>
+    <div class="form-group">
+        <label for="InputEmail1">Email地址</label>
+        <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" value="test@@qq.com" autocomplete="off">
+        <small id="emailHelp" class="form-text text-muted">将更新把对应用户的Email更新为这个值</small>
+    </div>
+    <div class="form-group">
+        <label for="InputNickname">Nickname昵称</label>
+        <input type="text" class="form-control" id="InputNickname" aria-describedby="emailHelp" value="" autocomplete="off">
+        <small id="emailHelp" class="form-text text-muted">将更新把对应用户的Nickname更新为这个值</small>
+    </div>
+    <div class="form-group">
+        <label for="InputPassword1">当前用户属性</label>
+        <textarea class="form-control" id="input-user" readonly autocomplete="off"></textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary" id="btn-get">Get</button>
+    <button type="button" class="btn btn-success" id="btn-update">Update</button>
+    <button type="button" class="btn btn-danger" id="btn-delete">Delete</button>
+</form>
+@section Scripts{
+    <script>
+        $('#btn-get').on('click', function (e) {
+            let id = $('#InputId').val();
+            $.ajax(`./getbyid`, {
+                type: "get",
+                data: { id: id },
+                dataType: "json"
+
+            }).done(function (data) {
+                $('#input-user').val(JSON.stringify(data));
+            });
+        });
+
+        $('#btn-update').on('click', function (e) {
+            let id = $('#InputId').val();
+            let email = $('#InputEmail1').val();
+            let nickname = $('#InputNickname').val();
+            $.ajax(`./update`, {
+                type: "put",
+                data: { id: id, email: email, nickname: nickname }
+            }).done(function (data) {
+                console.debug("更新成功");
+            });
+        });
+
+        $('#btn-delete').on('click', function (e) {
+            let id = $('#InputId').val();
+            $.ajax(`./delete`, {
+                type: "delete",
+                data: { id: id }
+            }).done(function (data) {
+                console.debug("删除成功");
+            });
+        });
+    </script>
+}
+
